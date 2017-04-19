@@ -1,0 +1,43 @@
+cluster.name: "central_elk"
+network.host: 0.0.0.0
+discovery.zen.minimum_master_nodes: 1
+xpack:
+  security:
+    authc:
+      realms:
+        rackspace:
+          type: ldap
+          order: 0
+          url: "ldaps://auth.edir.rackspace.com:636"
+          # bind_dn: "ou=users, o=rackspace"
+          user_dn_templates:
+            - "cn=lnx-CloudServer-Engineers,ou=POSIXGroups,o=rackspace"
+            - "cn=lnx-CloudServer-Developers,ou=POSIXGroups,o=rackspace"
+            - "cn=lnx-CloudServer-Admins,ou=POSIXGroups,o=rackspace"
+          # user_search:
+          #   base_dn: "ou=POSIXGroups, o=rackspace"
+          #   attribute: cn
+          group_search:
+            base_dn: "ou=users, o=rackspace"
+          files:
+            role_mapping: "CONFIG_DIR/x-pack/role_mapping.yml"
+          unmapped_groups_as_roles: false
+
+
+
+
+# DN = Distingushed Name (full path)
+# CN = Common Name
+# OU = Organizational Unit
+# DC = Domain Component
+#
+# ("CN=Dev-India,OU=Distribution Groups,DC=gp,DC=gl,DC=google,DC=com");
+# In effect the query is:
+#
+# From the com Domain Component, find the google Domain Component, and then inside it the gl Domain Component and then inside it the gp Domain Component.
+
+# For example, the DN "uid=john.doe,ou=People,dc=example,dc=com" has four RDNs:
+# uid=john.doe
+# ou=People
+# dc=example
+# dc=com

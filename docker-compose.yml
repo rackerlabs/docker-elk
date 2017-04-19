@@ -11,6 +11,8 @@ services:
       ES_JAVA_OPTS: "-Xmx256m -Xms256m"
     networks:
       - elk
+    volumes:
+      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
 
   logstash:
     build: logstash/
