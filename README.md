@@ -4,6 +4,8 @@
 
 Run the latest version of the ELK (Elasticsearch, Logstash, Kibana) stack with Docker and Docker-compose.
 
+**Note**: This version has [X-Pack support](https://www.elastic.co/products/x-pack).
+
 It will give you the ability to analyze any data set by using the searching/aggregation capabilities of Elasticsearch and the visualization power of Kibana.
 
 Based on the official images:
@@ -11,12 +13,6 @@ Based on the official images:
 * [elasticsearch](https://github.com/elastic/elasticsearch-docker)
 * [logstash](https://github.com/elastic/logstash-docker)
 * [kibana](https://github.com/elastic/kibana-docker)
-
-**Note**: Other branches in this project are available:
-
-* ELK 5 with X-Pack support: https://github.com/deviantony/docker-elk/tree/x-pack
-* ELK 5 in Vagrant: https://github.com/deviantony/docker-elk/tree/vagrant
-* ELK 5 with Search Guard: https://github.com/deviantony/docker-elk/tree/searchguard
 
 # Requirements
 
@@ -60,7 +56,12 @@ Now that the stack is running, you'll want to inject logs in it. The shipped log
 $ nc localhost 5000 < /path/to/logfile.log
 ```
 
-And then access Kibana UI by hitting [http://localhost:5601](http://localhost:5601) with a web browser.
+And then access Kibana UI by hitting [http://localhost:5601](http://localhost:5601) with a web browser and use the following credentials to login:
+
+* user: *elastic*
+* password: *changeme*
+
+Refer to the Elastic documentation for a list of built-in users: [Setting Up User Authentication](https://www.elastic.co/guide/en/x-pack/current/setting-up-authentication.html#built-in-users)
 
 *NOTE*: You'll need to inject data into logstash before being able to configure a logstash index pattern in Kibana. Then all you should have to do is to hit the create button.
 
@@ -86,9 +87,11 @@ The Kibana default configuration is stored in `kibana/config/kibana.yml`.
 
 ## How can I tune Logstash configuration?
 
-The logstash configuration is stored in `logstash/config/logstash.yml`.
+The Logstash container is using the [shipped configuration](https://github.com/elastic/logstash-docker/blob/master/build/logstash/config/logstash.yml).
 
-It is also possible to map the entire `config` directory inside the container in the `docker-compose.yml`. Update the logstash container declaration to:
+If you want to override the default configuration, create a file `logstash/config/logstash.conf` and add your configuration in it.
+
+Then, you'll need to map your configuration file inside the container in the `docker-compose.yml`. Update the logstash container declaration to:
 
 ```yml
 logstash:
